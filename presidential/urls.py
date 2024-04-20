@@ -10,4 +10,5 @@ urlpatterns = [
     path('delete/<user_id>', views.delete_desc, name="delete_desc"),
     path('edit/<user_id>', views.edit_desc, name="edit_desc"),
     path('apply/<user_id>', views.apply_presid, name="apply_presid"),
+    path('unapply/<user_id>', views.uncandidate, name="uncandidate"),
 ]
