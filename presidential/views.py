@@ -12,8 +12,8 @@ from .forms import textForm
 
 def home_page(request):
     if request.user.is_authenticated:
-        descriptions = text.objects.all()
-        return render(request,'home.html', {"descriptions": descriptions})
+        applicantes = candidacy.objects.filter(candidate = True)
+        return render(request,'home.html', {"applicantes": applicantes})
     else:
         return render(request,'home.html')
 
@@ -84,4 +84,13 @@ def edit_desc(request, user_id):
         return render(request, 'edit_desc.html', {'form':form, 'description':description})
     
 def apply_presid(request, user_id):
-    
+    candidacy_instance = candidacy.objects.get(user_id=user_id)
+    candidacy_instance.candidate = True
+    candidacy_instance.save()
+    return redirect('homePage')
+
+def uncandidate(request, user_id):
+    candidacy_instance = candidacy.objects.get(user_id=user_id)
+    candidacy_instance.candidate = False
+    candidacy_instance.save()
+    return redirect('homePage')
