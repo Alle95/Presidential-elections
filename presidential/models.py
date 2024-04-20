@@ -12,3 +12,12 @@ class text(models.Model):
         return(
             f"{self.content}"
         )
+    
+class candidacy(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    candidate = models.BooleanField(default=False)
+
+    def __str__ (self):
+        return(
+            f"{self.user}"
+        )
