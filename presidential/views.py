@@ -25,9 +25,10 @@ def register_user(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
+            candidacy.objects.create(user=user)
             login(request, user)
             messages.success(request,("Registration Successful!"))
-            return redirect('homePage', {'form':request.user.username})
+            return redirect('homePage')
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form':form})
