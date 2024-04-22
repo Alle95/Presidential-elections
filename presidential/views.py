@@ -54,10 +54,10 @@ def logout_user(request):
 def profile_user(request, user_id):
     description = text.objects.filter(user_id=user_id)
     form = textForm(request.POST or None)
-    if request.method == 'POST':
-        if description.exists():
-            return render(request, 'profile.html', {'form':form, 'description':description})
-        else :
+    if description.exists():
+        return render(request, 'profile.html', {'description':description})
+    else:
+        if request.method == 'POST':
             if form.is_valid():
                 object = form.save(commit=False)
                 object.user = request.user
