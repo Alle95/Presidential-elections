@@ -12,9 +12,11 @@
               <div class="alert alert-primary" role="alert">
                 {{ userDescription.content }}  
                 <br/><br/>
+                  {% if user.username == userDescription.user.username %}
                   <a href="{% url 'delete_desc' user.id %}"><i class="bi bi-trash"></i></a>
                         &nbsp;&nbsp;
                   <a href="{% url 'edit_desc' user.id %}"><i class="bi bi-pencil-square"></i></a>
+                  {% endif %}
               </div>
               {% endfor%}
         </div>
@@ -24,8 +26,10 @@
             <form action="" method=POST>
                 {% csrf_token %}
                  {{ form.as_p }}
-                    <input type="submit" class="btn btn-dark" value="submit" >               
+                 {% if form %}
+                  <input type="submit" class="btn btn-dark" value="submit" >            
             </form>
+          {% endif %}
         </div>
       </div>
     </div>
