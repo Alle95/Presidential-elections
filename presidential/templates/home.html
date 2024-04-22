@@ -28,6 +28,9 @@
                 <div class="alert alert-primary" role="alert">
                   {% for allCandidates in applicantes %} 
                   <a href="{% url 'profile' allCandidates.user_id %}" class="list-group-item list-group-item-action list-group-item-dark">{{ allCandidates.user.username|upper }}</a>
+                  {% if user.username == allCandidates.user.username %}
+                    <a href="{% url 'uncandidate' user.id %}"><i class="bi bi-trash"></i></a>
+                    {% endif %}
                   <br/>
                 {% endfor %}
             </div>
