@@ -12,30 +12,52 @@
   </head >
   <body>
     <div class="container">
-        <div class="card">
-            <div class="card-body" style="text-align: center;">
-                <br>
-                <h3>Welcome to the Presidential Election Website</h3>
-                {% if user %}
-                  <h3 style="text-transform: uppercase;">{{ user.username }}</h3>
-                {% endif %}
-            </div>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-danger" role="alert">
+            {{ message }}
           </div>
-          {% if user.username %}
-          <div class="card">
-            <div class="card-body" >
-                <h4>The list of candidates: </h4>
-                <div class="alert alert-primary" role="alert">
-                  {% for allCandidates in applicantes %} 
-                  <a href="{% url 'profile' allCandidates.user_id %}" class="list-group-item list-group-item-action list-group-item-dark">{{ allCandidates.user.username|upper }}</a>
-                  {% if user.username == allCandidates.user.username %}
-                    <a href="{% url 'uncandidate' user.id %}"><i class="bi bi-trash"></i></a>
-                    {% endif %}
-                  <br/>
-                {% endfor %}
-            </div>
-          </div>
+        {% endfor%}
+      {% endif %}
+        <div class="card-body" style="text-align: center;"><br>
+          <h3>Welcome to the Presidential Election Website</h3>
+          {% if user %}
+            <h3 style="text-transform: uppercase;">{{ user.username }}</h3>
           {% endif %}
-    </div>
-  </body>
+        </div>
+    </br>
+      {% if user.username %}
+      <h4>The list of candidates: </h4><br>
+        <div class="card w-50">
+          <div class="card-body" >
+            <table class="table table-sm">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Number of Votes</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for allCandidates in applicantes %}
+                <tr>
+                  <th scope="row"></th>
+                  <td><a href="{% url 'profile' allCandidates.user_id %}" class="list-group-item list-group-item-action ">{{ allCandidates.user.username|upper }}</a>
+                  {% if user.username == allCandidates.user.username %}
+                    <a href="{% url 'uncandidate' user.id %}"><i class="bi bi-trash"></i></a></td>
+                  {% endif %}
+                  </td>
+                  <td>{{ allCandidates.no_votes }}</td>
+                  {% if user.username != allCandidates.user.username %}
+                  <td><a class="btn btn-primary btn-sm" href="{% url 'vote' allCandidates.user_id %}" role="button"><i class="bi bi-hand-thumbs-up-fill"></i>Vote</a></td>
+                  {% endif %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
+          </div>
+        </div>
+    </body>
 </html>
