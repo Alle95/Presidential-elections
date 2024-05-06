@@ -1,7 +1,5 @@
-import getpass
-import os
 from django.forms import ModelForm
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -12,7 +10,7 @@ from .forms import textForm
 
 def home_page(request):
     if request.user.is_authenticated:
-        applicantes = candidacy.objects.filter(candidate = True)
+        applicantes = candidacy.objects.filter(candidate = True).order_by('-no_votes')
         return render(request,'home.html', {"applicantes": applicantes})
     else:
         return render(request,'home.html')
@@ -95,3 +93,17 @@ def uncandidate(request, user_id):
     candidacy_instance.candidate = False
     candidacy_instance.save()
     return redirect('homePage')
+
+def vote(request, user_id):
+    voter = candidacy.objects.get(user_id=request.user)
+    if (voter.voted == False) :
+        candidate = candidacy.objects.get(user_id=user_id)
+        candidate.no_votes += 1
+        candidate.save()
+        voter.voted = True
+        voter.save()
+        messages.success(request,("Thank you for your vote!"))
+        return redirect('homePage')
+    else:
+        messages.success(request,("You have already voted!"))
+        return redirect('homePage')
