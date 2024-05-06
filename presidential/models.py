@@ -16,6 +16,8 @@ class text(models.Model):
 class candidacy(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     candidate = models.BooleanField(default=False)
+    no_votes = models.IntegerField(default=0)
+    voted = models.BooleanField(default=False)
 
     def __str__ (self):
         return(
